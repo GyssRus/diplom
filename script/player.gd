@@ -64,6 +64,3 @@ func perform_attack():
 	attack_collision.disabled = true
 	await get_tree().create_timer(0.5).timeout
 	can_attack = true
-
-func take_damage(amount):
-	print("Игрок получил урон!")
