@@ -14,14 +14,14 @@ var can_attack = true
 var player_health = 50
 var max_health = 50
 
-@onready var attack_area = $AttackArea
-@onready var attack_collision = $AttackArea/AttackCollision
+@onready var attack_area = $MeshInstance3D/AttackArea           # изменено
+@onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision  # изменено
+@onready var mesh = $MeshInstance3D
 
 func _ready():
 	add_to_group("player")
 	print("Игрок добавлен в группу player")
 	
-	# Настраиваем зону атаки
 	if attack_collision:
 		attack_collision.disabled = true
 	if attack_area:
@@ -39,6 +39,10 @@ func _physics_process(delta):
 		direction = 1
 	
 	velocity.x = direction * speed
+	
+	# ПОВОРОТ ПЕРСОНАЖА (AttackArea повернётся автоматически!)
+	if direction != 0:
+		mesh.scale.x = -1 if direction < 0 else 1
 	
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = jump_velocity
@@ -89,7 +93,6 @@ func take_damage(amount):
 	player_health -= amount
 	print("Игрок получил урон ", amount, ", осталось здоровья: ", player_health)
 	
-	# Визуальный эффект (мигание)
 	if has_node("MeshInstance3D"):
 		var material = $MeshInstance3D.get_active_material(0)
 		if material:
@@ -103,14 +106,11 @@ func take_damage(amount):
 
 func die():
 	print("ИГРОК УМЕР!")
-	# Отключаем управление
 	set_process(false)
 	set_physics_process(false)
 	
-
 	if has_node("CollisionShape3D"):
 		$CollisionShape3D.disabled = true
 	
-	# Перезапускаем уровень с задержкой
 	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()

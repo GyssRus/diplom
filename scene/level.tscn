@@ -32,9 +32,6 @@ mesh = SubResource("BoxMesh_s4405")
 [node name="player" parent="." unique_id=1312855527 instance=ExtResource("1_s4405")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.2196903, 1.052638, 0)
 
-[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.087582, 1.0072386, 0)
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=667818630]
 environment = SubResource("Environment_dmi07")
 camera_attributes = SubResource("CameraAttributesPractical_7g0b6")
@@ -42,3 +39,6 @@ compositor = SubResource("Compositor_ukt71")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=891987862]
 transform = Transform3D(1, 0, 0, 0, 0.640284, 0.7681383, 0, -0.7681383, 0.640284, 0, 2.9805307, 0)
+
+[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.156754, 0)

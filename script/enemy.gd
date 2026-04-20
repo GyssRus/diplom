@@ -6,8 +6,9 @@ var gravity = 15.0
 var attack_damage = 10
 var can_attack = true
 
-@onready var attack_area = $AttackArea
-@onready var attack_collision = $AttackArea/AttackCollision
+@onready var mesh = $MeshInstance3D
+@onready var attack_area = $MeshInstance3D/AttackArea
+@onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision
 
 var player = null
 
@@ -23,6 +24,10 @@ func _physics_process(delta):
 	if player and is_instance_valid(player):
 		var direction = sign(player.global_position.x - global_position.x)
 		velocity.x = direction * speed
+		
+		# ПОВОРОТ ВРАГА В СТОРОНУ ДВИЖЕНИЯ
+		if direction != 0:
+			mesh.scale.x = -1 if direction < 0 else 1
 	else:
 		velocity.x = 0
 	
@@ -55,8 +60,8 @@ func take_damage(amount):
 	print("Враг получил урон ", amount, ", осталось ", health)
 	
 	# Визуальный эффект
-	if has_node("MeshInstance3D"):
-		var material = $MeshInstance3D.get_active_material(0)
+	if mesh:
+		var material = mesh.get_active_material(0)
 		if material:
 			material.albedo_color = Color(1, 0, 0)
 			if is_instance_valid(get_tree()):
