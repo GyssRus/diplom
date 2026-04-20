@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bxvk5oncs2x00"]
 
 [ext_resource type="PackedScene" uid="uid://cw1658otjiwhx" path="res://scene/player.tscn" id="1_s4405"]
+[ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="2_36wlx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j2tch"]
 size = Vector3(20, 0.2, 20)
@@ -19,4 +20,7 @@ shape = SubResource("BoxShape3D_j2tch")
 mesh = SubResource("BoxMesh_s4405")
 
 [node name="player" parent="." unique_id=1312855527 instance=ExtResource("1_s4405")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.867891, 1.052638, 0)
+
+[node name="Enemy" parent="." unique_id=2108192953 instance=ExtResource("2_36wlx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9599352, 0)
