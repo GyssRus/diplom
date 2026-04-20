@@ -12,8 +12,6 @@ var can_attack = true
 var player = null
 
 func _ready():
-	# НЕ отключаем коллизию навсегда!
-	# attack_collision.disabled = true  ← УБРАТЬ ЭТУ СТРОКУ
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	add_to_group("enemies")
 	print("Враг создан! Здоровье: ", health)
@@ -22,7 +20,7 @@ func _physics_process(delta):
 	if player == null:
 		player = get_tree().get_first_node_in_group("player")
 	
-	if player:
+	if player and is_instance_valid(player):
 		var direction = sign(player.global_position.x - global_position.x)
 		velocity.x = direction * speed
 	else:
@@ -34,17 +32,22 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_attack_area_body_entered(body):
-	print("В AttackArea вошло: ", body.name)
+	# Проверяем, что игрок существует и не удалён
+	if not is_instance_valid(body):
+		return
 	
 	if body.is_in_group("player") and can_attack:
 		print("Атакуем игрока!")
 		can_attack = false
 		
 		# Наносим урон
-		body.take_damage(attack_damage)
+		if body.has_method("take_damage"):
+			body.take_damage(attack_damage)
 		
-		# Ждём перезарядку
-		await get_tree().create_timer(1.0).timeout
+		# Проверяем, что дерево всё ещё существует
+		if is_instance_valid(get_tree()):
+			await get_tree().create_timer(1.0).timeout
+		
 		can_attack = true
 
 func take_damage(amount):
@@ -56,7 +59,8 @@ func take_damage(amount):
 		var material = $MeshInstance3D.get_active_material(0)
 		if material:
 			material.albedo_color = Color(1, 0, 0)
-			await get_tree().create_timer(0.1).timeout
+			if is_instance_valid(get_tree()):
+				await get_tree().create_timer(0.1).timeout
 			material.albedo_color = Color(1, 0.5, 0.5)
 	
 	if health <= 0:

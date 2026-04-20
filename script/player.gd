@@ -2,7 +2,7 @@ extends CharacterBody3D
 
 # Движение
 var speed = 5.0
-var jump_velocity = 4.5
+var jump_velocity = 7
 var gravity = 15.0
 
 # Бой
@@ -104,5 +104,14 @@ func take_damage(amount):
 
 func die():
 	print("ИГРОК УМЕР!")
-	# Перезапускаем уровень
+	# Отключаем управление
+	set_process(false)
+	set_physics_process(false)
+	
+	# Отключаем коллизию, чтобы враги больше не могли атаковать
+	if has_node("CollisionShape3D"):
+		$CollisionShape3D.disabled = true
+	
+	# Перезапускаем уровень с задержкой
+	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()
