@@ -17,7 +17,7 @@ func _physics_process(delta):
 	if player:
 		var direction = sign(player.global_position.x - global_position.x)
 		velocity.x = direction * speed
-		print("Двигаюсь к игроку, направление: ", direction)  # Отладка
+		#print("Двигаюсь к игроку, направление: ", direction)  # Отладка
 	else:
 		velocity.x = 0
 	
