@@ -22,5 +22,5 @@ mesh = SubResource("BoxMesh_s4405")
 [node name="player" parent="." unique_id=1312855527 instance=ExtResource("1_s4405")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.867891, 1.052638, 0)
 
-[node name="Enemy" parent="." unique_id=2108192953 instance=ExtResource("2_36wlx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9599352, 0)
+[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0072386, 0)

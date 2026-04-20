@@ -6,19 +6,11 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h08p8"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_f87vc"]
-
-[node name="Enemy" type="CharacterBody3D" unique_id=2108192953]
+[node name="enemy" type="CharacterBody3D" unique_id=1290964897]
 script = ExtResource("1_h08p8")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1993074071]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=649200443]
 mesh = SubResource("BoxMesh_vufel")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1226840675]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=80643940]
 shape = SubResource("BoxShape3D_h08p8")
-
-[node name="AttackArea" type="Area3D" parent="." unique_id=52824548]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0136788, 0, 0)
-
-[node name="AttackCollision" type="CollisionShape3D" parent="AttackArea" unique_id=689732618]
-shape = SubResource("BoxShape3D_f87vc")

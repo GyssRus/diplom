@@ -9,7 +9,8 @@ var can_attack = true
 @onready var attack_collision = $AttackArea/AttackCollision
 
 func _ready():
-	# Создаём зону атаки программно (чтобы не было ошибок)
+	add_to_group("player")
+	print("Игрок добавлен в группу player")
 	setup_attack_area()
 
 func setup_attack_area():
