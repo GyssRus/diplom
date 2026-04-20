@@ -12,7 +12,8 @@ var can_attack = true
 var player = null
 
 func _ready():
-	attack_collision.disabled = true
+	# НЕ отключаем коллизию навсегда!
+	# attack_collision.disabled = true  ← УБРАТЬ ЭТУ СТРОКУ
 	attack_area.body_entered.connect(_on_attack_area_body_entered)
 	add_to_group("enemies")
 	print("Враг создан! Здоровье: ", health)
@@ -33,23 +34,24 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _on_attack_area_body_entered(body):
+	print("В AttackArea вошло: ", body.name)
+	
 	if body.is_in_group("player") and can_attack:
+		print("Атакуем игрока!")
 		can_attack = false
-		attack_collision.disabled = false
 		
+		# Наносим урон
 		body.take_damage(attack_damage)
-		print("Враг атаковал! Урон: ", attack_damage)
 		
-		await get_tree().create_timer(0.2).timeout
-		attack_collision.disabled = true
+		# Ждём перезарядку
 		await get_tree().create_timer(1.0).timeout
 		can_attack = true
 
 func take_damage(amount):
 	health -= amount
-	print("Враг получил урон ", amount, ", осталось здоровья: ", health)
+	print("Враг получил урон ", amount, ", осталось ", health)
 	
-	# Визуальный эффект (красный цвет)
+	# Визуальный эффект
 	if has_node("MeshInstance3D"):
 		var material = $MeshInstance3D.get_active_material(0)
 		if material:
@@ -58,8 +60,5 @@ func take_damage(amount):
 			material.albedo_color = Color(1, 0.5, 0.5)
 	
 	if health <= 0:
-		die()
-
-func die():
-	print("Враг уничтожен!")
-	queue_free()
+		print("Враг умер!")
+		queue_free()

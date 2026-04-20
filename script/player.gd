@@ -11,6 +11,9 @@ var current_damage = 10
 var attack_cooldown = 0.5
 var can_attack = true
 
+var player_health = 50
+var max_health = 50
+
 # Узлы (должны быть в сцене!)
 @onready var attack_area = $AttackArea
 @onready var attack_collision = $AttackArea/AttackCollision
@@ -84,4 +87,22 @@ func perform_attack():
 	can_attack = true
 
 func take_damage(amount):
-	print("Игрок получил урон ", amount)
+	player_health -= amount
+	print("Игрок получил урон ", amount, ", осталось здоровья: ", player_health)
+	
+	# Визуальный эффект (мигание)
+	if has_node("MeshInstance3D"):
+		var material = $MeshInstance3D.get_active_material(0)
+		if material:
+			var original_color = material.albedo_color
+			material.albedo_color = Color(1, 1, 1)
+			await get_tree().create_timer(0.1).timeout
+			material.albedo_color = original_color
+	
+	if player_health <= 0:
+		die()
+
+func die():
+	print("ИГРОК УМЕР!")
+	# Перезапускаем уровень
+	get_tree().reload_current_scene()
