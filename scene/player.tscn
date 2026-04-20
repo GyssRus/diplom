@@ -4,7 +4,11 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hjaqi"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xo3ru"]
+albedo_color = Color(0, 0, 1, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_fvtld"]
+material = SubResource("StandardMaterial3D_xo3ru")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xo3ru"]
 

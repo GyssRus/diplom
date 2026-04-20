@@ -14,7 +14,6 @@ var can_attack = true
 var player_health = 50
 var max_health = 50
 
-# Узлы (должны быть в сцене!)
 @onready var attack_area = $AttackArea
 @onready var attack_collision = $AttackArea/AttackCollision
 
@@ -108,7 +107,7 @@ func die():
 	set_process(false)
 	set_physics_process(false)
 	
-	# Отключаем коллизию, чтобы враги больше не могли атаковать
+
 	if has_node("CollisionShape3D"):
 		$CollisionShape3D.disabled = true
 	

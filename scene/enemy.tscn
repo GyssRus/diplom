@@ -2,7 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cnrsliye3ci48" path="res://script/enemy.gd" id="1_h08p8"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_h08p8"]
+albedo_color = Color(1, 0, 0, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_vufel"]
+material = SubResource("StandardMaterial3D_h08p8")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h08p8"]
 
