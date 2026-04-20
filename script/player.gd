@@ -14,8 +14,8 @@ var can_attack = true
 var player_health = 50
 var max_health = 50
 
-@onready var attack_area = $MeshInstance3D/AttackArea           # изменено
-@onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision  # изменено
+@onready var attack_area = $MeshInstance3D/AttackArea
+@onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision
 @onready var mesh = $MeshInstance3D
 
 func _ready():
@@ -40,7 +40,7 @@ func _physics_process(delta):
 	
 	velocity.x = direction * speed
 	
-	# ПОВОРОТ ПЕРСОНАЖА (AttackArea повернётся автоматически!)
+	# Поворот персонажа
 	if direction != 0:
 		mesh.scale.x = -1 if direction < 0 else 1
 	
@@ -93,8 +93,8 @@ func take_damage(amount):
 	player_health -= amount
 	print("Игрок получил урон ", amount, ", осталось здоровья: ", player_health)
 	
-	if has_node("MeshInstance3D"):
-		var material = $MeshInstance3D.get_active_material(0)
+	if mesh:
+		var material = mesh.get_active_material(0)
 		if material:
 			var original_color = material.albedo_color
 			material.albedo_color = Color(1, 1, 1)

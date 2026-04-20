@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cw1658otjiwhx" path="res://scene/player.tscn" id="1_s4405"]
 [ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="2_36wlx"]
+[ext_resource type="Script" uid="uid://cdoxwyca76j65" path="res://script/camera.gd" id="3_dmi07"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j2tch"]
 size = Vector3(20, 0.2, 20)
@@ -42,3 +43,7 @@ transform = Transform3D(1, 0, 0, 0, 0.640284, 0.7681383, 0, -0.7681383, 0.640284
 
 [node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.156754, 0)
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1146000435]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5445015, 5.356057)
+script = ExtResource("3_dmi07")

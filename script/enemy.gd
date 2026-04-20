@@ -3,9 +3,12 @@ extends CharacterBody3D
 var health = 30
 var speed = 2.0
 var gravity = 15.0
-var attack_damage = 10  # ДОБАВЛЕНО: урон атаки
-var can_attack = true   # ДОБАВЛЕНО: можно ли атаковать
-var is_attacking = false # ДОБАВЛЕНО: идёт ли атака сейчас
+var attack_damage = 10
+var can_attack = true
+var is_attacking = false
+
+# ДОБАВЛЕНО: множитель скорости во время атаки (0.3 = 30% от обычной скорости)
+var attack_speed_multiplier = 0.3
 
 @onready var mesh = $MeshInstance3D
 @onready var detection_area = $DetectionArea
@@ -14,19 +17,15 @@ var is_attacking = false # ДОБАВЛЕНО: идёт ли атака сейч
 @onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision
 
 var player = null
-var player_in_range = false  # Игрок в зоне атаки
-var player_detected = false  # Игрок в зоне обнаружения
+var player_in_range = false
+var player_detected = false
 
 func _ready():
-	# Подключаем сигналы для зоны обнаружения
 	detection_area.body_entered.connect(_on_player_detected)
 	detection_area.body_exited.connect(_on_player_lost)
-	
-	# Подключаем сигналы для зоны атаки
 	attack_area.body_entered.connect(_on_player_entered)
 	attack_area.body_exited.connect(_on_player_exited)
 	
-	# Включаем обе зоны
 	detection_collision.disabled = false
 	attack_collision.disabled = false
 	detection_area.monitoring = true
@@ -36,22 +35,24 @@ func _ready():
 	print("Враг создан! Здоровье: ", health)
 
 func _physics_process(delta):
-	# Ищем игрока, если ещё не нашли
 	if player == null:
 		player = get_tree().get_first_node_in_group("player")
 	
-	# ДВИЖЕНИЕ ТОЛЬКО ЕСЛИ ИГРОК ОБНАРУЖЕН И НЕ АТАКУЕТ
-	if player_detected and player and is_instance_valid(player) and not is_attacking:
+	if player_detected and player and is_instance_valid(player):
 		var direction = sign(player.global_position.x - global_position.x)
-		velocity.x = direction * speed
+		
+		# ИЗМЕНЕНО: если атакует — замедляется, иначе нормальная скорость
+		if is_attacking:
+			velocity.x = direction * speed * attack_speed_multiplier
+		else:
+			velocity.x = direction * speed
 		
 		# Поворот в сторону движения
 		if direction != 0:
 			mesh.scale.x = -1 if direction < 0 else 1
 	else:
-		velocity.x = 0  # Стоим на месте
+		velocity.x = 0
 	
-	# ДОБАВЛЕНО: если игрок в зоне атаки и можно атаковать — начинаем атаку
 	if player_in_range and can_attack and not is_attacking:
 		start_attack()
 	
@@ -60,14 +61,10 @@ func _physics_process(delta):
 	
 	move_and_slide()
 
-# ДОБАВЛЕНО: функция атаки
 func start_attack():
 	print("[Атака] Начинаю атаку!")
 	is_attacking = true
 	can_attack = false
-	
-	# Останавливаем движение
-	velocity.x = 0
 	
 	# Задержка перед ударом (замах) — 0.3 секунды
 	await get_tree().create_timer(0.3).timeout
@@ -86,7 +83,6 @@ func start_attack():
 	is_attacking = false
 	print("[Атака] Готов к новой атаке")
 
-# Зона обнаружения (большая сфера)
 func _on_player_detected(body):
 	if body.is_in_group("player"):
 		player_detected = true
@@ -97,7 +93,6 @@ func _on_player_lost(body):
 		player_detected = false
 		print("[Обнаружение] Игрок ПОТЕРЯН! Останавливаюсь")
 
-# Зона атаки (маленький бокс перед врагом)
 func _on_player_entered(body):
 	if body.is_in_group("player"):
 		player_in_range = true
