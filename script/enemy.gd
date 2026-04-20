@@ -3,6 +3,9 @@ extends CharacterBody3D
 var health = 30
 var speed = 2.0
 var gravity = 15.0
+var attack_damage = 10  # ДОБАВЛЕНО: урон атаки
+var can_attack = true   # ДОБАВЛЕНО: можно ли атаковать
+var is_attacking = false # ДОБАВЛЕНО: идёт ли атака сейчас
 
 @onready var mesh = $MeshInstance3D
 @onready var detection_area = $DetectionArea
@@ -37,8 +40,8 @@ func _physics_process(delta):
 	if player == null:
 		player = get_tree().get_first_node_in_group("player")
 	
-	# ДВИЖЕНИЕ ТОЛЬКО ЕСЛИ ИГРОК ОБНАРУЖЕН
-	if player_detected and player and is_instance_valid(player):
+	# ДВИЖЕНИЕ ТОЛЬКО ЕСЛИ ИГРОК ОБНАРУЖЕН И НЕ АТАКУЕТ
+	if player_detected and player and is_instance_valid(player) and not is_attacking:
 		var direction = sign(player.global_position.x - global_position.x)
 		velocity.x = direction * speed
 		
@@ -48,10 +51,40 @@ func _physics_process(delta):
 	else:
 		velocity.x = 0  # Стоим на месте
 	
+	# ДОБАВЛЕНО: если игрок в зоне атаки и можно атаковать — начинаем атаку
+	if player_in_range and can_attack and not is_attacking:
+		start_attack()
+	
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
 	move_and_slide()
+
+# ДОБАВЛЕНО: функция атаки
+func start_attack():
+	print("[Атака] Начинаю атаку!")
+	is_attacking = true
+	can_attack = false
+	
+	# Останавливаем движение
+	velocity.x = 0
+	
+	# Задержка перед ударом (замах) — 0.3 секунды
+	await get_tree().create_timer(0.3).timeout
+	
+	# Проверяем, что игрок всё ещё в зоне атаки
+	if player_in_range and player and is_instance_valid(player):
+		print("[Атака] Удар! Наношу урон ", attack_damage)
+		if player.has_method("take_damage"):
+			player.take_damage(attack_damage)
+	else:
+		print("[Атака] Промах! Игрок вышел из зоны")
+	
+	# Перезарядка (1 секунда)
+	await get_tree().create_timer(1.0).timeout
+	can_attack = true
+	is_attacking = false
+	print("[Атака] Готов к новой атаке")
 
 # Зона обнаружения (большая сфера)
 func _on_player_detected(body):
