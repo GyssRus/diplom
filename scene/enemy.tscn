@@ -12,17 +12,26 @@ material = SubResource("StandardMaterial3D_h08p8")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_h08p8"]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_8u16h"]
+radius = 4.136
+
 [node name="enemy" type="CharacterBody3D" unique_id=1290964897]
 script = ExtResource("1_h08p8")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=649200443]
 mesh = SubResource("BoxMesh_vufel")
 
-[node name="AttackArea" type="Area3D" parent="MeshInstance3D" unique_id=1727612023]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0297861, 0, 0)
+[node name="AttackArea" type="Area3D" parent="MeshInstance3D" unique_id=1661865087]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0377395, 0, 0)
 
-[node name="AttackCollision" type="CollisionShape3D" parent="MeshInstance3D/AttackArea" unique_id=942335775]
+[node name="AttackCollision" type="CollisionShape3D" parent="MeshInstance3D/AttackArea" unique_id=30785599]
 shape = SubResource("BoxShape3D_f87vc")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=80643940]
 shape = SubResource("BoxShape3D_h08p8")
+
+[node name="DetectionArea" type="Area3D" parent="." unique_id=1727612023]
+
+[node name="DetectionCollision" type="CollisionShape3D" parent="DetectionArea" unique_id=942335775]
+shape = SubResource("SphereShape3D_8u16h")
+debug_color = Color(0.9845416, 0, 0.34705535, 0.41960785)
