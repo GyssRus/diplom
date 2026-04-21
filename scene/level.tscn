@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="2_36wlx"]
 [ext_resource type="Script" uid="uid://cdoxwyca76j65" path="res://script/camera.gd" id="3_dmi07"]
 [ext_resource type="PackedScene" uid="uid://j7ttje6h8033" path="res://scene/weapon.tscn" id="4_7g0b6"]
+[ext_resource type="PackedScene" uid="uid://oe06q52njysy" path="res://scene/enemy_fast.tscn" id="5_ukt71"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_j2tch"]
 size = Vector3(20, 0.2, 20)
@@ -39,9 +40,6 @@ compositor = SubResource("Compositor_ukt71")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=891987862]
 transform = Transform3D(1, 0, 0, 0, 0.640284, 0.7681383, 0, -0.7681383, 0.640284, 0, 2.9805307, 0)
 
-[node name="enemy001" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.156754, 0)
-
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1146000435]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0136538, 7.261985, 5.356057)
 script = ExtResource("3_dmi07")
@@ -54,3 +52,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.7737262, 0)
 
 [node name="enemy" parent="." unique_id=1629509823 instance=ExtResource("2_36wlx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6550713, 1.0553615, 0)
+
+[node name="EnemyFast" parent="." unique_id=1322668938 instance=ExtResource("5_ukt71")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9184215, 0)

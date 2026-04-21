@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://oe06q52njysy"]
+
+[ext_resource type="Script" uid="uid://dbibn4xbrngld" path="res://script/enemy_fast.gd" id="1_w1kv5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2xb1f"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_w1kv5"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kvicf"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_w1kv5"]
+radius = 4.0
+
+[node name="EnemyFast" type="CharacterBody3D" unique_id=1322668938]
+script = ExtResource("1_w1kv5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1521866854]
+shape = SubResource("BoxShape3D_2xb1f")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1483144967]
+mesh = SubResource("BoxMesh_w1kv5")
+
+[node name="AttackArea" type="Area3D" parent="MeshInstance3D" unique_id=1200051244]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0181196, 0, 0)
+
+[node name="AttackCollision" type="CollisionShape3D" parent="MeshInstance3D/AttackArea" unique_id=390411834]
+shape = SubResource("BoxShape3D_kvicf")
+
+[node name="DetectionArea" type="Area3D" parent="." unique_id=1031399208]
+
+[node name="DetectionCollision" type="CollisionShape3D" parent="DetectionArea" unique_id=1418744432]
+shape = SubResource("SphereShape3D_w1kv5")
