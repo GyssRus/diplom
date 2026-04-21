@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://j7ttje6h8033"]
+
+[ext_resource type="Script" uid="uid://ctn2wwpmjkd5i" path="res://script/weapon.gd" id="1_7flqi"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_niidl"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_niidl"]
+
+[node name="Weapon" type="Area3D" unique_id=406736865]
+script = ExtResource("1_7flqi")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1366027594]
+shape = SubResource("BoxShape3D_niidl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1442820607]
+mesh = SubResource("BoxMesh_niidl")

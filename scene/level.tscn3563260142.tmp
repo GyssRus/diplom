@@ -39,18 +39,15 @@ compositor = SubResource("Compositor_ukt71")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=891987862]
 transform = Transform3D(1, 0, 0, 0, 0.640284, 0.7681383, 0, -0.7681383, 0.640284, 0, 2.9805307, 0)
 
-[node name="enemy001" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
+[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.156754, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1146000435]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0136538, 7.261985, 5.356057)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5445015, 5.356057)
 script = ExtResource("3_dmi07")
 
 [node name="player" parent="." unique_id=1312855527 instance=ExtResource("1_s4405")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.933891, 5.686606, 0)
 
 [node name="weapon" parent="." unique_id=785666682 instance=ExtResource("4_7g0b6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.7737262, 0)
-
-[node name="enemy" parent="." unique_id=1629509823 instance=ExtResource("2_36wlx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6550713, 1.0553615, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.21687114, 0)

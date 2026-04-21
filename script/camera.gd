@@ -1,15 +1,9 @@
 extends Camera3D
 
 # Настройки следования
-var target: Node3D = null           # Цель (игрок)
-var follow_speed = 5.0              # Скорость следования (плавность)
-var offset = Vector3(0, 1.5, 5)     # Относительное положение камеры
-
-func _ready():
-	# Ищем игрока на сцене
-	target = get_tree().get_first_node_in_group("player")
-	if target == null:
-		print("Ошибка: Камера не нашла игрока!")
+var target: Node3D = null
+var follow_speed = 5.0
+var offset = Vector3(0, 1.5, 10)
 
 func _physics_process(delta):
 	if target == null:

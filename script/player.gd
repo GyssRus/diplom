@@ -14,6 +14,13 @@ var can_attack = true
 var player_health = 50
 var max_health = 50
 
+# Оружие
+var has_weapon = false
+var weapon_damage = 0
+var weapon_durability = 0
+var weapon_name = ""
+var nearby_weapon = null
+
 @onready var attack_area = $MeshInstance3D/AttackArea
 @onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision
 @onready var mesh = $MeshInstance3D
@@ -21,6 +28,31 @@ var max_health = 50
 func _ready():
 	add_to_group("player")
 	print("Игрок добавлен в группу player")
+	
+	# Создаём зону подбора оружия
+	var pickup_area = Area3D.new()
+	pickup_area.name = "PickupArea"
+	add_child(pickup_area)
+	
+	var pickup_collision = CollisionShape3D.new()
+	var box_shape = BoxShape3D.new()
+	box_shape.size = Vector3(2.5, 2.5, 2.5)
+	pickup_collision.shape = box_shape
+	pickup_area.add_child(pickup_collision)
+	
+	# Настройка слоёв коллизий
+	pickup_area.collision_layer = 1
+	pickup_area.collision_mask = 1
+	
+	# Подключаем сигналы
+	pickup_area.area_entered.connect(_on_pickup_area_entered)
+	pickup_area.area_exited.connect(_on_pickup_area_exited)
+	
+	# Включаем мониторинг
+	pickup_area.monitoring = true
+	pickup_area.monitorable = true
+	
+	print("PickupArea создана! Размер: 2.5 x 2.5 x 2.5")
 	
 	if attack_collision:
 		attack_collision.disabled = true
@@ -32,6 +64,12 @@ func _ready():
 
 func _physics_process(delta):
 	var direction = 0
+	
+	# Временная отладка для клавиши E
+	if Input.is_action_just_pressed("e"):
+		print("Клавиша E НАЖАТА!")
+		print("nearby_weapon: ", nearby_weapon)
+		print("has_weapon: ", has_weapon)
 	
 	if Input.is_action_pressed("a"):
 		direction = -1
@@ -54,6 +92,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("m1") and can_attack:
 		print("Атака")
 		perform_attack()
+	
+	# Подбор оружия по клавише E
+	if Input.is_action_just_pressed("e") and nearby_weapon and not has_weapon:
+		pickup_weapon(nearby_weapon)
+		nearby_weapon.queue_free()
+		nearby_weapon = null
 	
 	move_and_slide()
 
@@ -80,6 +124,14 @@ func perform_attack():
 		if body.has_method("take_damage"):
 			print("Наношу урон ", current_damage)
 			body.take_damage(current_damage)
+			
+			# Расход прочности оружия
+			if has_weapon:
+				weapon_durability -= 1
+				print("Оружие: ", weapon_name, ", осталось ударов: ", weapon_durability)
+				
+				if weapon_durability <= 0:
+					break_weapon()
 	
 	await get_tree().create_timer(0.2).timeout
 	
@@ -88,6 +140,63 @@ func perform_attack():
 	
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
+
+func pickup_weapon(weapon):
+	# Если уже есть оружие — не подбираем новое
+	if has_weapon:
+		print("У вас уже есть оружие!")
+		return
+	
+	# Подбираем оружие
+	has_weapon = true
+	weapon_damage = weapon.damage
+	weapon_durability = weapon.max_durability
+	weapon_name = weapon.weapon_name
+	
+	# Меняем текущий урон
+	current_damage = weapon_damage
+	
+	print("Подобрано оружие: ", weapon_name)
+	print("Урон: ", weapon_damage, ", Прочность: ", weapon_durability)
+
+func break_weapon():
+	has_weapon = false
+	current_damage = base_damage
+	weapon_damage = 0
+	weapon_durability = 0
+	
+	print("Оружие сломалось! Урон вернулся к ", base_damage)
+
+func _on_pickup_area_entered(area):
+	print("[PickupArea] Вошла область: ", area.name)
+	print("  area.get_parent(): ", area.get_parent().name)
+	print("  area.get_parent().get_groups(): ", area.get_parent().get_groups())
+	
+	# Само оружие — это родитель области (CollisionShape3D)
+	var weapon = area.get_parent()
+	
+	# Проверяем, есть ли у оружия группа "weapons"
+	if weapon.is_in_group("weapons"):
+		nearby_weapon = weapon
+		print("  nearby_weapon УСТАНОВЛЕН! Оружие: ", weapon.weapon_name)
+		print("  Рядом оружие! Нажмите E чтобы подобрать")
+	else:
+		# Если родитель не в группе, может быть, само оружие — это area?
+		if area.is_in_group("weapons"):
+			nearby_weapon = area
+			print("  nearby_weapon УСТАНОВЛЕН (через area)! Оружие: ", area.weapon_name)
+			print("  Рядом оружие! Нажмите E чтобы подобрать")
+		else:
+			print("  Оружие НЕ в группе weapons!")
+
+func _on_pickup_area_exited(area):
+	var weapon = area.get_parent()
+	if weapon.is_in_group("weapons") and nearby_weapon == weapon:
+		nearby_weapon = null
+		print("Оружие вышло из зоны подбора")
+	elif area.is_in_group("weapons") and nearby_weapon == area:
+		nearby_weapon = null
+		print("Оружие вышло из зоны подбора (через area)")
 
 func take_damage(amount):
 	player_health -= amount
