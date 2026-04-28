@@ -7,12 +7,13 @@ var gravity = 15.0
 var attack_damage = 8
 var can_attack = true
 var is_attacking = false
-var attack_speed_multiplier = 0.5  # Замедление во время атаки
+var attack_speed_multiplier = 0.5
 
-@onready var mesh = $MeshInstance3D
+# Узлы
+@onready var animated_sprite = $AnimatedSprite3D
 @onready var detection_area = $DetectionArea
-@onready var attack_area = $MeshInstance3D/AttackArea
-@onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision
+@onready var attack_area = $AttackArea
+@onready var attack_collision = $AttackArea/AttackCollision
 
 var player = null
 var player_in_range = false
@@ -28,7 +29,10 @@ func _ready():
 	# Настройка коллизий
 	detection_area.monitoring = true
 	attack_area.monitoring = true
-	attack_collision.disabled = false  # Хитбокс всегда включён
+	attack_collision.disabled = false
+	
+	# Настройка Billboard для спрайта
+	animated_sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	
 	add_to_group("enemies")
 	print("Быстрый враг создан! Здоровье: ", health)
@@ -40,17 +44,29 @@ func _physics_process(delta):
 	if player_detected and player and is_instance_valid(player):
 		var direction = sign(player.global_position.x - global_position.x)
 		
-		# Если атакует — замедляется, иначе нормальная скорость
+		# Движение
 		if is_attacking:
 			velocity.x = direction * speed * attack_speed_multiplier
 		else:
 			velocity.x = direction * speed
 		
-		# Поворот в сторону движения
+		# Анимации
+		if not is_attacking:
+			if direction != 0:
+				if animated_sprite.sprite_frames.has_animation("walk"):
+					animated_sprite.play("walk")
+			else:
+				if animated_sprite.sprite_frames.has_animation("idle"):
+					animated_sprite.play("idle")
+		
+		# Поворот спрайта и зоны атаки
 		if direction != 0:
-			mesh.scale.x = -1 if direction < 0 else 1
+			animated_sprite.flip_h = direction < 0
+			attack_area.position.x = -1.0 if direction < 0 else 1.0
 	else:
 		velocity.x = 0
+		if not is_attacking and animated_sprite.sprite_frames.has_animation("idle"):
+			animated_sprite.play("idle")
 	
 	# Проверка атаки
 	if player_in_range and can_attack and not is_attacking:
@@ -66,18 +82,20 @@ func start_attack():
 	is_attacking = true
 	can_attack = false
 	
-	# Задержка перед ударом (замах) — 0.3 секунды
+	if animated_sprite.sprite_frames.has_animation("attack"):
+		animated_sprite.play("attack")
+	
 	await get_tree().create_timer(0.3).timeout
 	
-	# Проверяем, что игрок всё ещё в зоне атаки
 	if player_in_range and player and is_instance_valid(player):
 		print("[FastEnemy] Удар! Наношу урон ", attack_damage)
 		if player.has_method("take_damage"):
 			player.take_damage(attack_damage)
 	else:
-		print("[FastEnemy] Промах! Игрок вышел из зоны")
+		print("[FastEnemy] Промах!")
 	
-	# Перезарядка (1 секунда)
+	await get_tree().create_timer(0.3).timeout
+	
 	await get_tree().create_timer(1.0).timeout
 	can_attack = true
 	is_attacking = false
@@ -86,12 +104,12 @@ func start_attack():
 func _on_player_detected(body):
 	if body.is_in_group("player"):
 		player_detected = true
-		print("[FastEnemy] Игрок замечен! Начинаю движение")
+		print("[FastEnemy] Игрок замечен!")
 
 func _on_player_lost(body):
 	if body.is_in_group("player"):
 		player_detected = false
-		print("[FastEnemy] Игрок потерян! Останавливаюсь")
+		print("[FastEnemy] Игрок потерян!")
 
 func _on_player_entered(body):
 	if body.is_in_group("player"):
@@ -107,12 +125,10 @@ func take_damage(amount):
 	health -= amount
 	print("[FastEnemy] Получил урон ", amount, ", осталось ", health)
 	
-	if mesh:
-		var material = mesh.get_active_material(0)
-		if material:
-			material.albedo_color = Color(1, 0, 0)
-			await get_tree().create_timer(0.1).timeout
-			material.albedo_color = Color(1, 0.5, 0)
+	if animated_sprite:
+		animated_sprite.modulate = Color(1, 0.5, 0.5)
+		await get_tree().create_timer(0.1).timeout
+		animated_sprite.modulate = Color(1, 1, 1)
 	
 	if health <= 0:
 		print("[FastEnemy] Умер!")
