@@ -37,9 +37,6 @@ environment = SubResource("Environment_dmi07")
 camera_attributes = SubResource("CameraAttributesPractical_7g0b6")
 compositor = SubResource("Compositor_ukt71")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=891987862]
-transform = Transform3D(1, 0, 0, 0, 0.640284, 0.7681383, 0, -0.7681383, 0.640284, 0, 2.9805307, 0)
-
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1146000435]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0136538, 7.261985, 5.356057)
 script = ExtResource("3_dmi07")
@@ -55,3 +52,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6550713, 1.0553615, 0)
 
 [node name="EnemyFast" parent="." unique_id=1322668938 instance=ExtResource("5_ukt71")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9184215, 0)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=986974912]
+transform = Transform3D(0.92917776, 1.6157182e-08, -0.36963323, 0.36963323, -4.061565e-08, 0.92917776, 0, -1, -4.3711392e-08, -3.2736778, 29.15269, 1.0510992)
+spot_range = 33.367207
+spot_attenuation = -0.3
+spot_angle = 38.35

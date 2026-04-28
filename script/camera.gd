@@ -3,7 +3,7 @@ extends Camera3D
 # Настройки следования
 var target: Node3D = null
 var follow_speed = 5.0
-var offset = Vector3(0, 1.5, 10)
+var offset = Vector3(0, 1.5, 5)
 
 func _physics_process(delta):
 	if target == null:

@@ -21,13 +21,25 @@ var weapon_durability = 0
 var weapon_name = ""
 var nearby_weapon = null
 
-@onready var attack_area = $MeshInstance3D/AttackArea
-@onready var attack_collision = $MeshInstance3D/AttackArea/AttackCollision
-@onready var mesh = $MeshInstance3D
+# Анимации
+@onready var animated_sprite = $AnimatedSprite3D
+@onready var attack_area = $AttackArea
+@onready var attack_collision = $AttackArea/AttackCollision
 
 func _ready():
 	add_to_group("player")
 	print("Игрок добавлен в группу player")
+	
+	# Настройка зоны атаки
+	if attack_collision:
+		attack_collision.disabled = true
+	if attack_area:
+		attack_area.monitoring = true
+		attack_area.collision_layer = 1
+		attack_area.collision_mask = 1
+		
+		# Устанавливаем начальную позицию зоны атаки (справа)
+		attack_area.position.x = 1.0
 	
 	# Создаём зону подбора оружия
 	var pickup_area = Area3D.new()
@@ -40,36 +52,24 @@ func _ready():
 	pickup_collision.shape = box_shape
 	pickup_area.add_child(pickup_collision)
 	
-	# Настройка слоёв коллизий
 	pickup_area.collision_layer = 1
 	pickup_area.collision_mask = 1
-	
-	# Подключаем сигналы
 	pickup_area.area_entered.connect(_on_pickup_area_entered)
 	pickup_area.area_exited.connect(_on_pickup_area_exited)
-	
-	# Включаем мониторинг
 	pickup_area.monitoring = true
 	pickup_area.monitorable = true
 	
-	print("PickupArea создана! Размер: 2.5 x 2.5 x 2.5")
-	
-	if attack_collision:
-		attack_collision.disabled = true
-	if attack_area:
-		attack_area.monitoring = true
-	
+	print("PickupArea создана!")
 	print("AttackArea найден: ", attack_area != null)
 	print("AttackCollision найден: ", attack_collision != null)
+
+var is_attacking = false
 
 func _physics_process(delta):
 	var direction = 0
 	
-	# Временная отладка для клавиши E
 	if Input.is_action_just_pressed("e"):
-		print("Клавиша E НАЖАТА!")
-		print("nearby_weapon: ", nearby_weapon)
-		print("has_weapon: ", has_weapon)
+		print("nearby_weapon: ", nearby_weapon, " has_weapon: ", has_weapon)
 	
 	if Input.is_action_pressed("a"):
 		direction = -1
@@ -78,9 +78,25 @@ func _physics_process(delta):
 	
 	velocity.x = direction * speed
 	
-	# Поворот персонажа
+	# ===== УПРАВЛЕНИЕ АНИМАЦИЯМИ =====
+	if not is_attacking:
+		if not is_on_floor():
+			if animated_sprite.sprite_frames.has_animation("jump"):
+				animated_sprite.play("jump")
+		elif direction != 0:
+			if animated_sprite.sprite_frames.has_animation("walk"):
+				animated_sprite.play("walk")
+		else:
+			if animated_sprite.sprite_frames.has_animation("idle"):
+				animated_sprite.play("idle")
+	
+	# ===== ПОВОРОТ СПРАЙТА (flip_h) =====
 	if direction != 0:
-		mesh.scale.x = -1 if direction < 0 else 1
+		animated_sprite.flip_h = direction < 0
+		
+		# Поворачиваем зону атаки
+		if attack_area:
+			attack_area.position.x = -1.0 if direction < 0 else 1.0
 	
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = jump_velocity
@@ -89,11 +105,10 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 	
 	# Атака
-	if Input.is_action_just_pressed("m1") and can_attack:
-		print("Атака")
+	if Input.is_action_just_pressed("m1") and can_attack and not is_attacking:
 		perform_attack()
 	
-	# Подбор оружия по клавише E
+	# Подбор оружия
 	if Input.is_action_just_pressed("e") and nearby_weapon and not has_weapon:
 		pickup_weapon(nearby_weapon)
 		nearby_weapon.queue_free()
@@ -104,111 +119,81 @@ func _physics_process(delta):
 func perform_attack():
 	print("=== АТАКА ===")
 	can_attack = false
+	is_attacking = true
+	
+	if animated_sprite.sprite_frames.has_animation("attack"):
+		animated_sprite.play("attack")
 	
 	if attack_collision:
 		attack_collision.disabled = false
 	
-	await get_tree().physics_frame
+	await get_tree().create_timer(0.25).timeout
 	
 	var bodies = []
 	if attack_area:
 		bodies = attack_area.get_overlapping_bodies()
 	
-	print("bodies.size(): ", bodies.size())
-	
 	for body in bodies:
-		print("body.name: ", body.name)
-		print("body.is_in_group('enemies'): ", body.is_in_group("enemies"))
-		print("body.has_method('take_damage'): ", body.has_method("take_damage"))
-		
 		if body.has_method("take_damage"):
 			print("Наношу урон ", current_damage)
 			body.take_damage(current_damage)
 			
-			# Расход прочности оружия
 			if has_weapon:
 				weapon_durability -= 1
-				print("Оружие: ", weapon_name, ", осталось ударов: ", weapon_durability)
-				
 				if weapon_durability <= 0:
 					break_weapon()
 	
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.25).timeout
 	
 	if attack_collision:
 		attack_collision.disabled = true
+	
+	is_attacking = false
 	
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
 
 func pickup_weapon(weapon):
-	# Если уже есть оружие — не подбираем новое
 	if has_weapon:
-		print("У вас уже есть оружие!")
 		return
 	
-	# Подбираем оружие
 	has_weapon = true
 	weapon_damage = weapon.damage
 	weapon_durability = weapon.max_durability
 	weapon_name = weapon.weapon_name
-	
-	# Меняем текущий урон
 	current_damage = weapon_damage
 	
 	print("Подобрано оружие: ", weapon_name)
-	print("Урон: ", weapon_damage, ", Прочность: ", weapon_durability)
 
 func break_weapon():
 	has_weapon = false
 	current_damage = base_damage
-	weapon_damage = 0
-	weapon_durability = 0
-	
-	print("Оружие сломалось! Урон вернулся к ", base_damage)
+	print("Оружие сломалось!")
 
 func _on_pickup_area_entered(area):
-	print("[PickupArea] Вошла область: ", area.name)
-	print("  area.get_parent(): ", area.get_parent().name)
-	print("  area.get_parent().get_groups(): ", area.get_parent().get_groups())
-	
-	# Само оружие — это родитель области (CollisionShape3D)
 	var weapon = area.get_parent()
-	
-	# Проверяем, есть ли у оружия группа "weapons"
 	if weapon.is_in_group("weapons"):
 		nearby_weapon = weapon
-		print("  nearby_weapon УСТАНОВЛЕН! Оружие: ", weapon.weapon_name)
-		print("  Рядом оружие! Нажмите E чтобы подобрать")
-	else:
-		# Если родитель не в группе, может быть, само оружие — это area?
-		if area.is_in_group("weapons"):
-			nearby_weapon = area
-			print("  nearby_weapon УСТАНОВЛЕН (через area)! Оружие: ", area.weapon_name)
-			print("  Рядом оружие! Нажмите E чтобы подобрать")
-		else:
-			print("  Оружие НЕ в группе weapons!")
+		print("Рядом оружие! Нажмите E")
+	elif area.is_in_group("weapons"):
+		nearby_weapon = area
+		print("Рядом оружие! Нажмите E")
 
 func _on_pickup_area_exited(area):
 	var weapon = area.get_parent()
 	if weapon.is_in_group("weapons") and nearby_weapon == weapon:
 		nearby_weapon = null
-		print("Оружие вышло из зоны подбора")
 	elif area.is_in_group("weapons") and nearby_weapon == area:
 		nearby_weapon = null
-		print("Оружие вышло из зоны подбора (через area)")
 
 func take_damage(amount):
 	player_health -= amount
 	print("Игрок получил урон ", amount, ", осталось здоровья: ", player_health)
 	
-	if mesh:
-		var material = mesh.get_active_material(0)
-		if material:
-			var original_color = material.albedo_color
-			material.albedo_color = Color(1, 1, 1)
-			await get_tree().create_timer(0.1).timeout
-			material.albedo_color = original_color
+	if animated_sprite:
+		animated_sprite.modulate = Color(1, 0.5, 0.5)
+		await get_tree().create_timer(0.1).timeout
+		animated_sprite.modulate = Color(1, 1, 1)
 	
 	if player_health <= 0:
 		die()
