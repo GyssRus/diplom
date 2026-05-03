@@ -15,6 +15,10 @@ run/main_scene="uid://bxvk5oncs2x00"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/goblend/plugin.cfg")
+
 [input]
 
 w={

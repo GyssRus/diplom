@@ -3,58 +3,158 @@
 [ext_resource type="PackedScene" uid="uid://cw1658otjiwhx" path="res://scene/player.tscn" id="1_s4405"]
 [ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="2_36wlx"]
 [ext_resource type="Script" uid="uid://cdoxwyca76j65" path="res://script/camera.gd" id="3_dmi07"]
-[ext_resource type="PackedScene" uid="uid://j7ttje6h8033" path="res://scene/weapon.tscn" id="4_7g0b6"]
-[ext_resource type="PackedScene" uid="uid://oe06q52njysy" path="res://scene/enemy_fast.tscn" id="5_ukt71"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_j2tch"]
-size = Vector3(20, 0.2, 20)
-
-[sub_resource type="BoxMesh" id="BoxMesh_s4405"]
-size = Vector3(20, 0.2, 20)
-
-[sub_resource type="Sky" id="Sky_36wlx"]
-
-[sub_resource type="Environment" id="Environment_dmi07"]
-background_mode = 2
-sky = SubResource("Sky_36wlx")
+[sub_resource type="Environment" id="Environment_ukt71"]
+ambient_light_source = 2
+ambient_light_color = Color(0.5019608, 0.5019608, 0.5019608, 1)
+ambient_light_energy = 0.5
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7g0b6"]
 
 [sub_resource type="Compositor" id="Compositor_ukt71"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_s4405"]
+size = Vector3(75.585, 0.2, 5.03)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_36wlx"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_36wlx"]
+size = Vector3(8.47, 0.2, 11.55)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmi07"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_dmi07"]
+size = Vector3(32.77, 0.2, 11.55)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7g0b6"]
+size = Vector3(40.065, 0.2, 17.39)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukt71"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ismto"]
+size = Vector3(14.535, 0.955, 17.275)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bddx0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_u2b8d"]
+size = Vector3(47.895, 0.955, 17.525)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aw33w"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_aw33w"]
+size = Vector3(27.1, 0.955, 17.525)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ktmlt"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_ukt71"]
+size = Vector3(0.235, 4.325, 18.085)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ismto"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bddx0"]
+size = Vector3(2, 1.8, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u2b8d"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_oxop7"]
+size = Vector3(31.695, 4.325, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gunnj"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_j35ge"]
+size = Vector3(2.4, 1.8, 1.655)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kfbl3"]
+
 [node name="level" type="Node3D" unique_id=504707422]
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=2088771503]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground" unique_id=441022861]
-shape = SubResource("BoxShape3D_j2tch")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=873585341]
-mesh = SubResource("BoxMesh_s4405")
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=667818630]
-environment = SubResource("Environment_dmi07")
+environment = SubResource("Environment_ukt71")
 camera_attributes = SubResource("CameraAttributesPractical_7g0b6")
 compositor = SubResource("Compositor_ukt71")
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1146000435]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.0136538, 7.261985, 5.356057)
-script = ExtResource("3_dmi07")
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=951060290]
+transform = Transform3D(1, 0, 0, 0, 0.9041273, 0.4272632, 0, -0.4272632, 0.9041273, 0, -3.4076343, 0)
+light_color = Color(1, 0.9607843, 0.81960785, 1)
+light_energy = 0.8
+shadow_enabled = true
+
+[node name="levelBlock" type="StaticBody3D" parent="." unique_id=1596524641]
+
+[node name="Пол1" type="CSGMesh3D" parent="levelBlock" unique_id=1211966859]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.99543, 0.2, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_s4405")
+material = SubResource("StandardMaterial3D_36wlx")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1398908164]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.019806, 0, 3.2797766)
+mesh = SubResource("BoxMesh_36wlx")
+material = SubResource("StandardMaterial3D_dmi07")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=227183425]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.486186, 0, 7.953636)
+mesh = SubResource("BoxMesh_dmi07")
+material = SubResource("StandardMaterial3D_dmi07")
+
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1228145927]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.520977, 0, 6.003771)
+mesh = SubResource("BoxMesh_7g0b6")
+material = SubResource("StandardMaterial3D_ukt71")
+
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1964954639]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73, 0.56192786, 6)
+mesh = SubResource("BoxMesh_ismto")
+material = SubResource("StandardMaterial3D_bddx0")
+
+[node name="CSGMesh3D6" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1873457113]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.60568, 0.56192786, 6)
+mesh = SubResource("BoxMesh_u2b8d")
+material = SubResource("StandardMaterial3D_aw33w")
+
+[node name="CSGMesh3D7" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=387980247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 140.34778, 0.56192786, 6)
+mesh = SubResource("BoxMesh_aw33w")
+material = SubResource("StandardMaterial3D_ktmlt")
+
+[node name="Дверной проём" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=569650992]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 3.1542912, 5.9462585)
+mesh = SubResource("BoxMesh_ukt71")
+material = SubResource("StandardMaterial3D_ismto")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="levelBlock/Пол1/Дверной проём" unique_id=436641396]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2433648, -4.525646)
+operation = 2
+mesh = SubResource("BoxMesh_bddx0")
+material = SubResource("StandardMaterial3D_u2b8d")
+
+[node name="Дверной проём2" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1293943429]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122.02591, 3.1542912, 5.9462585)
+mesh = SubResource("BoxMesh_ukt71")
+material = SubResource("StandardMaterial3D_ismto")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="levelBlock/Пол1/Дверной проём2" unique_id=627698852]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2433648, -4.525646)
+operation = 2
+mesh = SubResource("BoxMesh_bddx0")
+material = SubResource("StandardMaterial3D_u2b8d")
+
+[node name="CSGMesh3D5" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=449044947]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137.99219, 3.2397335, -0.9986038)
+mesh = SubResource("BoxMesh_oxop7")
+material = SubResource("StandardMaterial3D_gunnj")
+
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="levelBlock/Пол1/CSGMesh3D5" unique_id=173765206]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1513367, -1.3288071, 0.26356697)
+operation = 2
+mesh = SubResource("BoxMesh_j35ge")
+material = SubResource("StandardMaterial3D_kfbl3")
 
 [node name="player" parent="." unique_id=1312855527 instance=ExtResource("1_s4405")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.933891, 5.686606, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7724628, 0.8291193, 1.3294849)
 
-[node name="weapon" parent="." unique_id=785666682 instance=ExtResource("4_7g0b6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.7737262, 0)
+[node name="Camera3D" type="Camera3D" parent="." unique_id=20383762]
+script = ExtResource("3_dmi07")
 
-[node name="enemy" parent="." unique_id=1629509823 instance=ExtResource("2_36wlx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.6550713, 1.0553615, 0)
-
-[node name="EnemyFast" parent="." unique_id=1322668938 instance=ExtResource("5_ukt71")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9184215, 0)
-
-[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=986974912]
-transform = Transform3D(0.92917776, 1.6157182e-08, -0.36963323, 0.36963323, -4.061565e-08, 0.92917776, 0, -1, -4.3711392e-08, -3.2736778, 29.15269, 1.0510992)
-spot_range = 33.367207
-spot_attenuation = -0.3
-spot_angle = 38.35
+[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.45755, 2.162782, 1.329)

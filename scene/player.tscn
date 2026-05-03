@@ -251,4 +251,5 @@ frame_progress = 1.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0218486, 0, 0)
 
 [node name="AttackCollision" type="CollisionShape3D" parent="AttackArea" unique_id=675721895]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.028501153, 0, 0)
 shape = SubResource("BoxShape3D_xo3ru")
