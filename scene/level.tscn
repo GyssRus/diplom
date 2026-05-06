@@ -1,70 +1,42 @@
 [gd_scene format=3 uid="uid://bxvk5oncs2x00"]
 
 [ext_resource type="PackedScene" uid="uid://cw1658otjiwhx" path="res://scene/player.tscn" id="1_s4405"]
-[ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="2_36wlx"]
 [ext_resource type="Script" uid="uid://cdoxwyca76j65" path="res://script/camera.gd" id="3_dmi07"]
+[ext_resource type="PackedScene" uid="uid://cycwxrxvpi8h3" path="res://scene/les_3d.tscn" id="4_7g0b6"]
+[ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="4_ukt71"]
+[ext_resource type="PackedScene" uid="uid://oe06q52njysy" path="res://scene/enemy_fast.tscn" id="5_ukt71"]
+[ext_resource type="PackedScene" uid="uid://j7ttje6h8033" path="res://scene/weapon.tscn" id="6_ismto"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ismto"]
+sky_top_color = Color(0.2901961, 0.4862745, 0.61960787, 1)
+sky_horizon_color = Color(1, 0.89411765, 0.70980394, 1)
+ground_bottom_color = Color(0.1882353, 0.45490196, 0.27058825, 1)
+ground_horizon_color = Color(0.72156864, 0.83137256, 0.72156864, 1)
+
+[sub_resource type="Sky" id="Sky_bddx0"]
+sky_material = SubResource("ProceduralSkyMaterial_ismto")
 
 [sub_resource type="Environment" id="Environment_ukt71"]
-ambient_light_source = 2
-ambient_light_color = Color(0.5019608, 0.5019608, 0.5019608, 1)
-ambient_light_energy = 0.5
+sky = SubResource("Sky_bddx0")
+ambient_light_source = 3
+ambient_light_color = Color(0.6901961, 0.7921569, 0.9098039, 1)
+reflected_light_source = 2
+ssao_radius = 0.5
+ssao_intensity = 1.0
+fog_light_color = Color(0.72156864, 0.83137256, 0.72156864, 1)
+fog_sky_affect = 0.1
+adjustment_contrast = 1.1
 
 [sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_7g0b6"]
+dof_blur_far_distance = 0.2
 
 [sub_resource type="Compositor" id="Compositor_ukt71"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_s4405"]
-size = Vector3(75.585, 0.2, 5.03)
+[sub_resource type="BoxShape3D" id="BoxShape3D_fhvih"]
+size = Vector3(2.231018, 16.06836, 2.6707764)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_36wlx"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_36wlx"]
-size = Vector3(8.47, 0.2, 11.55)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dmi07"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_dmi07"]
-size = Vector3(32.77, 0.2, 11.55)
-
-[sub_resource type="BoxMesh" id="BoxMesh_7g0b6"]
-size = Vector3(40.065, 0.2, 17.39)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ukt71"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_ismto"]
-size = Vector3(14.535, 0.955, 17.275)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bddx0"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_u2b8d"]
-size = Vector3(47.895, 0.955, 17.525)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aw33w"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_aw33w"]
-size = Vector3(27.1, 0.955, 17.525)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ktmlt"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_ukt71"]
-size = Vector3(0.235, 4.325, 18.085)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ismto"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_bddx0"]
-size = Vector3(2, 1.8, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u2b8d"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_oxop7"]
-size = Vector3(31.695, 4.325, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gunnj"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_j35ge"]
-size = Vector3(2.4, 1.8, 1.655)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kfbl3"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_dmi07"]
+size = Vector3(827.5519, 53.108826, 0.001)
 
 [node name="level" type="Node3D" unique_id=504707422]
 
@@ -74,87 +46,101 @@ camera_attributes = SubResource("CameraAttributesPractical_7g0b6")
 compositor = SubResource("Compositor_ukt71")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment" unique_id=951060290]
-transform = Transform3D(1, 0, 0, 0, 0.9041273, 0.4272632, 0, -0.4272632, 0.9041273, 0, -3.4076343, 0)
-light_color = Color(1, 0.9607843, 0.81960785, 1)
-light_energy = 0.8
+transform = Transform3D(0.8835777, -0.30677179, 0.35380995, 0, 0.75554496, 0.6550971, -0.46828467, -0.5788292, 0.6675827, 0, -3.4076343, 0)
+light_color = Color(1, 0.8392157, 0.627451, 1)
+light_energy = 2.584
+light_bake_mode = 0
 shadow_enabled = true
 
-[node name="levelBlock" type="StaticBody3D" parent="." unique_id=1596524641]
-
-[node name="Пол1" type="CSGMesh3D" parent="levelBlock" unique_id=1211966859]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.99543, 0.2, 0)
-use_collision = true
-mesh = SubResource("BoxMesh_s4405")
-material = SubResource("StandardMaterial3D_36wlx")
-
-[node name="CSGMesh3D" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1398908164]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -42.019806, 0, 3.2797766)
-mesh = SubResource("BoxMesh_36wlx")
-material = SubResource("StandardMaterial3D_dmi07")
-
-[node name="CSGMesh3D2" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=227183425]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.486186, 0, 7.953636)
-mesh = SubResource("BoxMesh_dmi07")
-material = SubResource("StandardMaterial3D_dmi07")
-
-[node name="CSGMesh3D3" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1228145927]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 57.520977, 0, 6.003771)
-mesh = SubResource("BoxMesh_7g0b6")
-material = SubResource("StandardMaterial3D_ukt71")
-
-[node name="CSGMesh3D4" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1964954639]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 73, 0.56192786, 6)
-mesh = SubResource("BoxMesh_ismto")
-material = SubResource("StandardMaterial3D_bddx0")
-
-[node name="CSGMesh3D6" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1873457113]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 103.60568, 0.56192786, 6)
-mesh = SubResource("BoxMesh_u2b8d")
-material = SubResource("StandardMaterial3D_aw33w")
-
-[node name="CSGMesh3D7" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=387980247]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 140.34778, 0.56192786, 6)
-mesh = SubResource("BoxMesh_aw33w")
-material = SubResource("StandardMaterial3D_ktmlt")
-
-[node name="Дверной проём" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=569650992]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 3.1542912, 5.9462585)
-mesh = SubResource("BoxMesh_ukt71")
-material = SubResource("StandardMaterial3D_ismto")
-
-[node name="CSGMesh3D" type="CSGMesh3D" parent="levelBlock/Пол1/Дверной проём" unique_id=436641396]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2433648, -4.525646)
-operation = 2
-mesh = SubResource("BoxMesh_bddx0")
-material = SubResource("StandardMaterial3D_u2b8d")
-
-[node name="Дверной проём2" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=1293943429]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 122.02591, 3.1542912, 5.9462585)
-mesh = SubResource("BoxMesh_ukt71")
-material = SubResource("StandardMaterial3D_ismto")
-
-[node name="CSGMesh3D" type="CSGMesh3D" parent="levelBlock/Пол1/Дверной проём2" unique_id=627698852]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.2433648, -4.525646)
-operation = 2
-mesh = SubResource("BoxMesh_bddx0")
-material = SubResource("StandardMaterial3D_u2b8d")
-
-[node name="CSGMesh3D5" type="CSGMesh3D" parent="levelBlock/Пол1" unique_id=449044947]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 137.99219, 3.2397335, -0.9986038)
-mesh = SubResource("BoxMesh_oxop7")
-material = SubResource("StandardMaterial3D_gunnj")
-
-[node name="CSGMesh3D2" type="CSGMesh3D" parent="levelBlock/Пол1/CSGMesh3D5" unique_id=173765206]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1513367, -1.3288071, 0.26356697)
-operation = 2
-mesh = SubResource("BoxMesh_j35ge")
-material = SubResource("StandardMaterial3D_kfbl3")
-
 [node name="player" parent="." unique_id=1312855527 instance=ExtResource("1_s4405")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.7724628, 0.8291193, 1.3294849)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -297.531, 13.056055, -8.66569)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=20383762]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -296.9396, 12.811268, 0)
 script = ExtResource("3_dmi07")
 
-[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("2_36wlx")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 86.45755, 2.162782, 1.329)
+[node name="les3D" parent="." unique_id=733455665 instance=ExtResource("4_7g0b6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.898651, 21.075863, -56.9758)
+
+[node name="CollisionShape3D" parent="les3D/les001/Plane/StaticBody3D" parent_id_path=PackedInt32Array(733455665, 1787044699) index="0" unique_id=863775284]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.502594, 0.13065147, -0.14620972)
+
+[node name="Object_97_010" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="22" unique_id=2067466414]
+transform = Transform3D(0.5801816, 0, 0, 0, 0.5801816, 0, 0, 0, 0.5801816, -203.51999, 3.6294594, 3.6383781)
+
+[node name="Object_116_022" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="297" unique_id=1353308114]
+transform = Transform3D(-0.112850316, 0, 0.0140309455, 0, 0.113719165, 0, -0.0140309455, 0, -0.112850316, -206.9006, -8.3602915, 42.428593)
+
+[node name="Object_116_023" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="298" unique_id=1305541292]
+transform = Transform3D(-0.11285031, 0, 0.0140309455, 0.00055892725, 0.11362889, 0.0044954284, -0.014019809, 0.004530039, -0.11276073, -212.11006, -8.383138, 30.819473)
+
+[node name="Object_116_024" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="299" unique_id=2071357785]
+transform = Transform3D(-0.112569645, 0.006512604, 0.014755271, 0.008115702, 0.112777844, 0.012138268, -0.013937988, 0.013068586, -0.112102665, -224.36382, -6.32432, 20.512955)
+
+[node name="Object_116_027" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="302" unique_id=558662422]
+transform = Transform3D(-0.11099637, 0.019807456, 0.014816663, 0.021428395, 0.11102393, 0.012105992, -0.012356892, 0.014608063, -0.11209804, -218.11954, -7.6201935, 26.090214)
+
+[node name="Object_111_005" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="421" unique_id=1872563112]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -349.10544, -6.698077, 43.79583)
+
+[node name="Object_111_006" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="422" unique_id=977516507]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -309.16956, -8.562436, 51.301983)
+
+[node name="Object_111_007" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="423" unique_id=1771519758]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -314.8085, -8.195197, 40.809982)
+
+[node name="Object_111_010" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="426" unique_id=286441776]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -230.0443, -7.506401, 34.465034)
+
+[node name="Object_111_012" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="428" unique_id=1199856592]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -283.45697, -6.9607153, 25.548946)
+
+[node name="Object_111_015" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="431" unique_id=1712369732]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -232.65692, -7.254567, 39.690285)
+
+[node name="Object_111_016" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="432" unique_id=1833250733]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -204.29129, -7.6512575, 36.704414)
+
+[node name="Object_111_018" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="434" unique_id=268836169]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -111.35644, -7.4859858, 30.027737)
+
+[node name="Object_111_022" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="438" unique_id=204825859]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -72.953926, -7.308442, 34.09179)
+
+[node name="Object_111_027" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="443" unique_id=1943291551]
+transform = Transform3D(0.5202793, 0, 0, 0, 0.5202793, 0, 0, 0, 0.5202793, -321.17197, -3.9589386, 1.8815994)
+
+[node name="Object_111_031" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="447" unique_id=1904941975]
+transform = Transform3D(0.5202793, 0, 0, 0, 0.5202793, 0, 0, 0, 0.5202793, -96.631294, -7.624324, 32.22127)
+
+[node name="Object_116_136" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="455" unique_id=2040525301]
+transform = Transform3D(-0.112850316, 0, 0.0140309455, 0, 0.113719165, 0, -0.0140309455, 0, -0.112850316, -230.30428, -7.486438, 52.909126)
+
+[node name="Object_14_003" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="464" unique_id=1907928042]
+transform = Transform3D(-0.64285034, -0.21092841, 0.038551107, 0.04959274, -0.027724333, 0.67528176, -0.20860864, 0.6434082, 0.041735947, -256.81787, -8.075246, 55.82097)
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="les3D/les001/Object_14_003/StaticBody3D" parent_id_path=PackedInt32Array(733455665, 799774062) index="1" unique_id=1993015519]
+transform = Transform3D(0.90522516, 0.16858551, 0.3900373, -0.14394954, 0.9853114, -0.09179106, -0.39978114, 0.026945906, 0.9162124, -0.14865112, -5.259041, 1.2282317)
+shape = SubResource("BoxShape3D_fhvih")
+
+[node name="Steana" type="StaticBody3D" parent="les3D" unique_id=639785346]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="les3D/Steana" unique_id=483486851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47735596, 15.795792, 47.666233)
+shape = SubResource("BoxShape3D_dmi07")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="les3D/Steana" unique_id=1403086338]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.47735596, 15.795792, 48.929955)
+shape = SubResource("BoxShape3D_dmi07")
+
+[node name="enemy" parent="." unique_id=1290964897 instance=ExtResource("4_ukt71")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -220.58925, 14.937458, -8.666)
+
+[node name="EnemyFast" parent="." unique_id=1322668938 instance=ExtResource("5_ukt71")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -176.93127, 17.002594, -8.666)
+
+[node name="Weapon" parent="." unique_id=406736865 instance=ExtResource("6_ismto")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -199.54587, 13.390735, -8.666)
+
+[editable path="les3D"]
+[editable path="les3D/les001"]

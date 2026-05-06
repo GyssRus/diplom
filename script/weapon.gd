@@ -10,6 +10,5 @@ func _ready():
 	print("Позиция оружия: ", global_position)
 	print("Группы: ", get_groups())
 	
-	# Включаем мониторинг
 	monitoring = true
 	monitorable = true

@@ -184,7 +184,7 @@ shape = SubResource("BoxShape3D_2xb1f")
 shape = SubResource("SphereShape3D_w1kv5")
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1291719260]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.07729727, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18340158, 0)
 pixel_size = 0.0044
 sprite_frames = SubResource("SpriteFrames_t7803")
 animation = &"idle"

@@ -180,7 +180,7 @@ animations = [{
 "duration": 0.5,
 "texture": ExtResource("37_frgke")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 12.0
 }, {
@@ -243,9 +243,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.39102983, 0)
 pixel_size = 0.007
 shaded = true
 sprite_frames = SubResource("SpriteFrames_d1347")
-animation = &"walk"
-frame = 11
-frame_progress = 1.0
+animation = &"jump"
 
 [node name="AttackArea" type="Area3D" parent="." unique_id=1843568]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.0218486, 0, 0)
