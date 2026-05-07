@@ -4,11 +4,15 @@ extends Area3D
 @export var damage = 25
 @export var max_durability = 5
 
+@onready var animated_sprite = $AnimatedSprite3D
+
 func _ready():
 	add_to_group("weapons")
-	print("Оружие создано: ", weapon_name)
-	print("Позиция оружия: ", global_position)
-	print("Группы: ", get_groups())
-	
 	monitoring = true
 	monitorable = true
+	
+	if animated_sprite and animated_sprite.sprite_frames.has_animation("default"):
+		animated_sprite.play("default")
+		animated_sprite.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	
+	print("Оружие создано: ", weapon_name)

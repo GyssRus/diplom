@@ -23,6 +23,33 @@ data = PackedVector3Array(1.8223, 1.6251, -0.9564, 0.7596, -4.297, -1.6407, 2.29
 [node name="CollisionShape3D" type="CollisionShape3D" parent="les001/Plane/StaticBody3D" unique_id=863775284]
 shape = SubResource("ConcavePolygonShape3D_fhvih")
 
+[node name="Object_97_006" parent="les001" index="18" unique_id=560532202]
+transform = Transform3D(0.5801816, 0, 0, 0, 0.5801816, 0, 0, 0, 0.5801816, -287.77344, 3.292305, -27.120811)
+
+[node name="Object_97_007" parent="les001" index="19" unique_id=652376415]
+transform = Transform3D(0.14374189, 0, 0.5620934, 0, 0.5801816, 0, -0.5620934, 0, 0.14374189, -294.4602, 4.189453, -75.26564)
+
+[node name="Object_116_031" parent="les001" index="306" unique_id=1291860533]
+transform = Transform3D(-0.112850316, 0, 0.0140309455, 0, 0.113719165, 0, -0.0140309455, 0, -0.112850316, -248.952, -7.0217357, 63.04624)
+
+[node name="Object_111_010" parent="les001" index="426" unique_id=286441776]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -230.0443, -7.492586, 34.465034)
+
+[node name="Object_111_012" parent="les001" index="428" unique_id=1199856592]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -283.45697, -7.1652117, 25.548946)
+
+[node name="Object_111_015" parent="les001" index="431" unique_id=1712369732]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -232.65692, -7.1741095, 39.690285)
+
+[node name="Object_111_016" parent="les001" index="432" unique_id=1833250733]
+transform = Transform3D(0.20757958, 0, 0, 0, 0.20757958, 0, 0, 0, 0.20757958, -204.29129, -7.6850133, 36.704414)
+
+[node name="Object_111_027" parent="les001" index="443" unique_id=1943291551]
+transform = Transform3D(0.5202793, 0, 0, 0, 0.5202793, 0, 0, 0, 0.5202793, -321.17197, -4.0100245, 1.8816013)
+
+[node name="Object_111_030" parent="les001" index="446" unique_id=1725336558]
+transform = Transform3D(0.5202793, 0, 0, 0, 0.5202793, 0, 0, 0, 0.5202793, -181.07776, -5.744956, 71.66962)
+
 [node name="StaticBody3D" type="StaticBody3D" parent="les001/Object_14_002" parent_id_path=PackedInt32Array(611334274, 1194601998) index="0" unique_id=1470465738]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="les001/Object_14_002/StaticBody3D" unique_id=1389586940]

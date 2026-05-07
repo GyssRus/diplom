@@ -8,7 +8,7 @@ extends CharacterBody3D
 var health = 15
 var speed = 4.0
 var gravity = 15.0
-var attack_damage = 8
+var attack_damage = 0.5
 
 # Атака
 var can_attack = true

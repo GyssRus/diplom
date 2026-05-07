@@ -195,6 +195,7 @@ shape = SubResource("BoxShape3D_f87vc")
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="." unique_id=1084137854]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.015469551, 0.31286502, 0)
 shaded = true
+alpha_cut = 2
 sprite_frames = SubResource("SpriteFrames_mdhln")
 animation = &"walk"
 frame = 5

@@ -1,5 +1,9 @@
 extends CharacterBody3D
 
+# ============================================
+# 1. НАСТРОЙКИ
+# ============================================
+
 # Движение
 var speed = 5.0
 var jump_velocity = 7
@@ -13,8 +17,8 @@ var can_attack = true
 var is_attacking = false
 
 # Здоровье
-var player_health = 50
-var max_health = 50
+var player_health = 4.0
+var max_health = 4.0
 
 # Оружие
 var has_weapon = false
@@ -27,6 +31,8 @@ var nearby_weapon = null
 # 2. ССЫЛКИ НА УЗЛЫ
 # ============================================
 
+@onready var pause_menu = get_tree().current_scene.get_node("PauseMenu")
+@onready var ui = $UI
 @onready var animated_sprite = $AnimatedSprite3D
 @onready var attack_area = $AttackArea
 @onready var attack_collision = $AttackArea/AttackCollision
@@ -41,6 +47,7 @@ func _ready():
 	
 	setup_attack_area()
 	setup_pickup_area()
+	setup_ui()
 	
 	print("AttackArea найден: ", attack_area != null)
 	print("AttackCollision найден: ", attack_collision != null)
@@ -52,7 +59,7 @@ func setup_attack_area():
 		attack_area.monitoring = true
 		attack_area.collision_layer = 1
 		attack_area.collision_mask = 1
-		attack_area.position.x = 1.0  # Начальная позиция зоны атаки (справа)
+		attack_area.position.x = 1.0
 
 func setup_pickup_area():
 	var pickup_area = Area3D.new()
@@ -74,6 +81,11 @@ func setup_pickup_area():
 	
 	print("PickupArea создана!")
 
+func setup_ui():
+	if ui:
+		ui.setup_hearts(max_health)
+		ui.update_hearts(player_health)
+
 # ============================================
 # 4. ДВИЖЕНИЕ
 # ============================================
@@ -84,7 +96,7 @@ func _physics_process(delta):
 	apply_movement(direction)
 	apply_gravity(delta)
 	update_animations(direction)
-	update_attack_area_position(direction)
+	rotate_player(direction)
 	
 	handle_jump()
 	handle_attack()
@@ -101,7 +113,7 @@ func get_movement_direction() -> int:
 
 func apply_movement(direction: int):
 	if is_attacking:
-		velocity.x = direction * speed * 0.5  # Замедление при атаке
+		velocity.x = direction * speed * 0.5
 	else:
 		velocity.x = direction * speed
 
@@ -114,12 +126,12 @@ func handle_jump():
 		velocity.y = jump_velocity
 
 # ============================================
-# 5. АНИМАЦИИ
+# 5. АНИМАЦИИ И ПОВОРОТ
 # ============================================
 
 func update_animations(direction: int):
 	if is_attacking:
-		return 
+		return
 	
 	if not is_on_floor():
 		if animated_sprite.sprite_frames.has_animation("jump"):
@@ -127,15 +139,17 @@ func update_animations(direction: int):
 	elif direction != 0:
 		if animated_sprite.sprite_frames.has_animation("walk"):
 			animated_sprite.play("walk")
-		else:
-			if animated_sprite.sprite_frames.has_animation("idle"):
-				animated_sprite.play("idle")
+	else:
+		if animated_sprite.sprite_frames.has_animation("idle"):
+			animated_sprite.play("idle")
 
-func update_attack_area_position(direction: int):
+func rotate_player(direction: int):
 	if direction != 0:
-		animated_sprite.flip_h = direction < 0
-		if attack_area:
-			attack_area.position.x = -1.0 if direction < 0 else 1.0
+		# Поворот на 180 градусов для левого направления, 0 для правого
+		if direction < 0:
+			rotation.y = PI   # Смотрит влево
+		else:
+			rotation.y = 0    # Смотрит вправо
 
 # ============================================
 # 6. АТАКА
@@ -166,7 +180,11 @@ func perform_attack():
 	can_attack = true
 
 func play_attack_animation():
-	if animated_sprite.sprite_frames.has_animation("attack"):
+	var anim_name = "attack_weapon" if has_weapon else "attack"
+	
+	if animated_sprite.sprite_frames.has_animation(anim_name):
+		animated_sprite.play(anim_name)
+	elif animated_sprite.sprite_frames.has_animation("attack"):
 		animated_sprite.play("attack")
 
 func enable_attack_collision():
@@ -193,9 +211,6 @@ func deal_damage_to_enemies():
 # ============================================
 
 func handle_pickup():
-	if Input.is_action_just_pressed("e"):
-		print("nearby_weapon: ", nearby_weapon, " has_weapon: ", has_weapon)
-	
 	if Input.is_action_just_pressed("e") and nearby_weapon and not has_weapon:
 		pickup_weapon(nearby_weapon)
 		nearby_weapon.queue_free()
@@ -253,16 +268,16 @@ func take_damage(amount):
 	player_health -= amount
 	print("Игрок получил урон ", amount, ", осталось здоровья: ", player_health)
 	
-	play_damage_flash()
+	if ui:
+		ui.update_hearts(player_health)
 	
-	if player_health <= 0:
-		die()
-
-func play_damage_flash():
 	if animated_sprite:
 		animated_sprite.modulate = Color(1, 0.5, 0.5)
 		await get_tree().create_timer(0.1).timeout
 		animated_sprite.modulate = Color(1, 1, 1)
+	
+	if player_health <= 0:
+		die()
 
 func die():
 	print("ИГРОК УМЕР!")
@@ -274,3 +289,19 @@ func die():
 	
 	await get_tree().create_timer(1.0).timeout
 	get_tree().reload_current_scene()
+
+# ============================================
+# 10. ПАУЗА
+# ============================================
+
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		toggle_pause()
+
+func toggle_pause():
+	if get_tree().paused:
+		get_tree().paused = false
+		pause_menu.visible = false
+	else:
+		get_tree().paused = true
+		pause_menu.visible = true

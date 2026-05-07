@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c8lk31owsy806" path="res://scene/enemy.tscn" id="4_ukt71"]
 [ext_resource type="PackedScene" uid="uid://oe06q52njysy" path="res://scene/enemy_fast.tscn" id="5_ukt71"]
 [ext_resource type="PackedScene" uid="uid://j7ttje6h8033" path="res://scene/weapon.tscn" id="6_ismto"]
+[ext_resource type="Script" uid="uid://ce1i2i8pxx7yc" path="res://script/pause_menu.gd" id="7_bddx0"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ismto"]
 sky_top_color = Color(0.2901961, 0.4862745, 0.61960787, 1)
@@ -17,6 +18,7 @@ ground_horizon_color = Color(0.72156864, 0.83137256, 0.72156864, 1)
 sky_material = SubResource("ProceduralSkyMaterial_ismto")
 
 [sub_resource type="Environment" id="Environment_ukt71"]
+background_mode = 2
 sky = SubResource("Sky_bddx0")
 ambient_light_source = 3
 ambient_light_color = Color(0.6901961, 0.7921569, 0.9098039, 1)
@@ -31,9 +33,6 @@ adjustment_contrast = 1.1
 dof_blur_far_distance = 0.2
 
 [sub_resource type="Compositor" id="Compositor_ukt71"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_fhvih"]
-size = Vector3(2.231018, 16.06836, 2.6707764)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dmi07"]
 size = Vector3(827.5519, 53.108826, 0.001)
@@ -67,6 +66,18 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.502594, 0.13065147, -0.146
 
 [node name="Object_97_010" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="22" unique_id=2067466414]
 transform = Transform3D(0.5801816, 0, 0, 0, 0.5801816, 0, 0, 0, 0.5801816, -203.51999, 3.6294594, 3.6383781)
+
+[node name="Object_101_001" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="104" unique_id=718555206]
+transform = Transform3D(0.15225777, 0, -0.66034156, 0, 0.6776677, 0, 0.66034156, 0, 0.15225777, -361.82602, 17.254906, -40.564896)
+
+[node name="Object_101_004" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="107" unique_id=1540457987]
+transform = Transform3D(0.6776677, 0, 0, 0, 0.6776677, 0, 0, 0, 0.6776677, -321.7479, 13.229176, -14.925858)
+
+[node name="Object_101_005" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="108" unique_id=1437526193]
+transform = Transform3D(0.6776677, 0, 0, 0, 0.6776677, 0, 0, 0, 0.6776677, -310.78384, 15.015118, -43.948357)
+
+[node name="Object_60_002" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="253" unique_id=1749348927]
+transform = Transform3D(-0.8215597, 0, -0.040062975, 0, 0.8225356, 0, 0.04006297, 0, -0.8215597, -262.564, 15.956917, -40.478424)
 
 [node name="Object_116_022" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="297" unique_id=1353308114]
 transform = Transform3D(-0.112850316, 0, 0.0140309455, 0, 0.113719165, 0, -0.0140309455, 0, -0.112850316, -206.9006, -8.3602915, 42.428593)
@@ -119,10 +130,6 @@ transform = Transform3D(-0.112850316, 0, 0.0140309455, 0, 0.113719165, 0, -0.014
 [node name="Object_14_003" parent="les3D/les001" parent_id_path=PackedInt32Array(733455665, 611334274) index="464" unique_id=1907928042]
 transform = Transform3D(-0.64285034, -0.21092841, 0.038551107, 0.04959274, -0.027724333, 0.67528176, -0.20860864, 0.6434082, 0.041735947, -256.81787, -8.075246, 55.82097)
 
-[node name="CollisionShape3D3" type="CollisionShape3D" parent="les3D/les001/Object_14_003/StaticBody3D" parent_id_path=PackedInt32Array(733455665, 799774062) index="1" unique_id=1993015519]
-transform = Transform3D(0.90522516, 0.16858551, 0.3900373, -0.14394954, 0.9853114, -0.09179106, -0.39978114, 0.026945906, 0.9162124, -0.14865112, -5.259041, 1.2282317)
-shape = SubResource("BoxShape3D_fhvih")
-
 [node name="Steana" type="StaticBody3D" parent="les3D" unique_id=639785346]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="les3D/Steana" unique_id=483486851]
@@ -141,6 +148,49 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -176.93127, 17.002594, -8.666
 
 [node name="Weapon" parent="." unique_id=406736865 instance=ExtResource("6_ismto")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -199.54587, 13.390735, -8.666)
+
+[node name="PauseMenu" type="CanvasLayer" parent="." unique_id=1888953180]
+script = ExtResource("7_bddx0")
+
+[node name="CenterContainer" type="Control" parent="PauseMenu" unique_id=182583904]
+process_mode = 3
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Panel" type="Panel" parent="PauseMenu/CenterContainer" unique_id=1908137512]
+layout_mode = 0
+offset_left = 320.0
+offset_top = 180.0
+offset_right = 1600.0
+offset_bottom = 900.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PauseMenu/CenterContainer/Panel" unique_id=2036966264]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -40.0
+offset_right = 150.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="resume" type="Button" parent="PauseMenu/CenterContainer/Panel/VBoxContainer" unique_id=1392796340]
+layout_mode = 2
+text = "ПРОДОЛЖИТЬ"
+
+[node name="quit" type="Button" parent="PauseMenu/CenterContainer/Panel/VBoxContainer" unique_id=1203222510]
+layout_mode = 2
+text = "ВЫЙТИ"
+
+[connection signal="pressed" from="PauseMenu/CenterContainer/Panel/VBoxContainer/resume" to="player" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/CenterContainer/Panel/VBoxContainer/resume" to="PauseMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="PauseMenu/CenterContainer/Panel/VBoxContainer/quit" to="PauseMenu" method="_on_quit_pressed"]
 
 [editable path="les3D"]
 [editable path="les3D/les001"]
